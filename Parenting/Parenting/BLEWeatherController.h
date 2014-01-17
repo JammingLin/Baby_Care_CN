@@ -62,4 +62,6 @@
 @property (assign) id<BLEWeatherControllerDelegate> bleweatherControllerDelegate;
 +(id)bleweathercontroller;
 -(BOOL)isConnected;
+-(void)checkbluetooth;
+
 @end
