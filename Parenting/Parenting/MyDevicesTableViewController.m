@@ -80,13 +80,13 @@
 
 -(void)dataInitialize{
     //处理已绑定设备
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLEPERIPHERAL_ACTIVITY"] != nil) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLE_COM"] != nil) {
         arrMyDevices = [[NSArray alloc] initWithObjects:@"移动记录设备", nil];
     }
     
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLEPERIPHERAL_ENVIRONMENT"] != nil) {
-//        NSArray *peripheral2 = [[NSArray alloc] initWithObjects:@"环境记录设备", nil];
-//        arrMyDevices = [arrMyDevices arrayByAddingObject:peripheral2];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLE_ENV"] != nil) {
+        NSArray *peripheral2 = [[NSArray alloc] initWithObjects:@"环境记录设备", nil];
+        arrMyDevices = [arrMyDevices arrayByAddingObject:peripheral2];
     }
     
     arrAdd = [[NSArray alloc] initWithObjects:@"绑定配件",nil];

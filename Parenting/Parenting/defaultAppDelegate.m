@@ -35,10 +35,10 @@ void UncaughtExceptionHandler(NSException *exception) {
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     application.applicationIconBadgeNumber = 0;
-
+    
     // Override point for customization after application launch.
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-       
+        
         [application setStatusBarStyle:UIStatusBarStyleLightContent];
         self.window.clipsToBounds =YES;
     }
@@ -71,18 +71,18 @@ void UncaughtExceptionHandler(NSException *exception) {
                                                           UITextAttributeTextColor,
                                                           
                                                           [UIFont fontWithName:@"Arival-MTBOLD" size:20],
-                                                
-                                                UITextAttributeFont,
+                                                          
+                                                          UITextAttributeFont,
                                                           nil]];
-
+    
     [self.window makeKeyAndVisible];
-
+    
     _uncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
     NSSetUncaughtExceptionHandler(&UncaughtExceptionHandler);
-
+    
     [MobClick startWithAppkey:UMENGAPPKEY];
     [MobClick checkUpdate];
-
+    
     // Required
     [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                                    UIRemoteNotificationTypeSound |
@@ -112,7 +112,6 @@ void UncaughtExceptionHandler(NSException *exception) {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLE_ENV"] != nil)
     {
         bleweatherCtrler = [BLEWeatherController bleweathercontroller];
-
     }
     
 //    Class cls = NSClassFromString(@"UMANUtil");
@@ -156,7 +155,7 @@ void UncaughtExceptionHandler(NSException *exception) {
     NSString *guideVerson =[[NSUserDefaults standardUserDefaults] stringForKey:@"GuideVerson"];
     if (![guideVerson  isEqual: GuideVerson])
     {
-        guideViewController = [[GuideViewController alloc] initWithRootViewController:TabbarController];        
+        guideViewController = [[GuideViewController alloc] initWithRootViewController:TabbarController];
         if (guideVerson == nil) {
             guideViewController.isLaunchBefore = NO;
         }
@@ -169,7 +168,7 @@ void UncaughtExceptionHandler(NSException *exception) {
     else{
         self.window.rootViewController  = TabbarController;
     }
-
+    
     [self initializePlat];
     
 }
@@ -182,80 +181,80 @@ void UncaughtExceptionHandler(NSException *exception) {
     //[ShareSDK connectSinaWeiboWithAppKey:@"2712555917"
     //                           appSecret:@"c76318d478ffd11a81ee70b424f1b162"
     //                         redirectUri:@"http://open.weibo.com/apps/2712555917"];
-        
+    
     //添加Facebook应用
     //[ShareSDK connectFacebookWithAppKey:@"315050775296347"
     //                          appSecret:@"2504ebbdbb8c22bd482b905edaf4a16c"];
     
-//    //添加腾讯微博应用
-//    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
-//                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
-//                                redirectUri:@"http://www.sharesdk.cn"];
-//    
-//    //添加QQ空间应用
-//    [ShareSDK connectQZoneWithAppKey:@"100371282"
-//                           appSecret:@"aed9b0303e3ed1e27bae87c33761161d"];
-//    
-//    //添加网易微博应用
-//    [ShareSDK connect163WeiboWithAppKey:@"T5EI7BXe13vfyDuy"
-//                              appSecret:@"gZxwyNOvjFYpxwwlnuizHRRtBRZ2lV1j"
-//                            redirectUri:@"http://www.shareSDK.cn"];
-//    
-//    //添加搜狐微博应用
-//    [ShareSDK connectSohuWeiboWithConsumerKey:@"SAfmTG1blxZY3HztESWx"
-//                               consumerSecret:@"yfTZf)!rVwh*3dqQuVJVsUL37!F)!yS9S!Orcsij"
-//                                  redirectUri:@"http://www.sharesdk.cn"];
-//    
-//    //添加豆瓣应用
-//    [ShareSDK connectDoubanWithAppKey:@"07d08fbfc1210e931771af3f43632bb9"
-//                            appSecret:@"e32896161e72be91"
-//                          redirectUri:@"http://dev.kumoway.com/braininference/infos.php"];
-//    
-//    //添加人人网应用
-//    [ShareSDK connectRenRenWithAppKey:@"fc5b8aed373c4c27a05b712acba0f8c3"
-//                            appSecret:@"f29df781abdd4f49beca5a2194676ca4"];
-//    
-//    //添加开心网应用
-//    [ShareSDK connectKaiXinWithAppKey:@"358443394194887cee81ff5890870c7c"
-//                            appSecret:@"da32179d859c016169f66d90b6db2a23"
-//                          redirectUri:@"http://www.sharesdk.cn/"];
-//    
-//    //添加Instapaper应用
-//    [ShareSDK connectInstapaperWithAppKey:@"4rDJORmcOcSAZL1YpqGHRI605xUvrLbOhkJ07yO0wWrYrc61FA"
-//                                appSecret:@"GNr1GespOQbrm8nvd7rlUsyRQsIo3boIbMguAl9gfpdL0aKZWe"];
-//    
-//    //添加有道云笔记应用
-//    [ShareSDK connectYouDaoNoteWithConsumerKey:@"dcde25dca105bcc36884ed4534dab940"
-//                                consumerSecret:@"d98217b4020e7f1874263795f44838fe"
-//                                   redirectUri:@"http://www.sharesdk.cn/"];
+    //    //添加腾讯微博应用
+    //    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
+    //                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
+    //                                redirectUri:@"http://www.sharesdk.cn"];
+    //
+    //    //添加QQ空间应用
+    //    [ShareSDK connectQZoneWithAppKey:@"100371282"
+    //                           appSecret:@"aed9b0303e3ed1e27bae87c33761161d"];
+    //
+    //    //添加网易微博应用
+    //    [ShareSDK connect163WeiboWithAppKey:@"T5EI7BXe13vfyDuy"
+    //                              appSecret:@"gZxwyNOvjFYpxwwlnuizHRRtBRZ2lV1j"
+    //                            redirectUri:@"http://www.shareSDK.cn"];
+    //
+    //    //添加搜狐微博应用
+    //    [ShareSDK connectSohuWeiboWithConsumerKey:@"SAfmTG1blxZY3HztESWx"
+    //                               consumerSecret:@"yfTZf)!rVwh*3dqQuVJVsUL37!F)!yS9S!Orcsij"
+    //                                  redirectUri:@"http://www.sharesdk.cn"];
+    //
+    //    //添加豆瓣应用
+    //    [ShareSDK connectDoubanWithAppKey:@"07d08fbfc1210e931771af3f43632bb9"
+    //                            appSecret:@"e32896161e72be91"
+    //                          redirectUri:@"http://dev.kumoway.com/braininference/infos.php"];
+    //
+    //    //添加人人网应用
+    //    [ShareSDK connectRenRenWithAppKey:@"fc5b8aed373c4c27a05b712acba0f8c3"
+    //                            appSecret:@"f29df781abdd4f49beca5a2194676ca4"];
+    //
+    //    //添加开心网应用
+    //    [ShareSDK connectKaiXinWithAppKey:@"358443394194887cee81ff5890870c7c"
+    //                            appSecret:@"da32179d859c016169f66d90b6db2a23"
+    //                          redirectUri:@"http://www.sharesdk.cn/"];
+    //
+    //    //添加Instapaper应用
+    //    [ShareSDK connectInstapaperWithAppKey:@"4rDJORmcOcSAZL1YpqGHRI605xUvrLbOhkJ07yO0wWrYrc61FA"
+    //                                appSecret:@"GNr1GespOQbrm8nvd7rlUsyRQsIo3boIbMguAl9gfpdL0aKZWe"];
+    //
+    //    //添加有道云笔记应用
+    //    [ShareSDK connectYouDaoNoteWithConsumerKey:@"dcde25dca105bcc36884ed4534dab940"
+    //                                consumerSecret:@"d98217b4020e7f1874263795f44838fe"
+    //                                   redirectUri:@"http://www.sharesdk.cn/"];
     
-//    //添加Facebook应用
-//    [ShareSDK connectFacebookWithAppKey:@"107704292745179"
-//                              appSecret:@"38053202e1a5fe26c80c753071f0b573"];
+    //    //添加Facebook应用
+    //    [ShareSDK connectFacebookWithAppKey:@"107704292745179"
+    //                              appSecret:@"38053202e1a5fe26c80c753071f0b573"];
     
-//    //添加Twitter应用
-//    [ShareSDK connectTwitterWithConsumerKey:@"mnTGqtXk0TYMXYTN7qUxg"
-//                             consumerSecret:@"ROkFqr8c3m1HXqS3rm3TJ0WkAJuwBOSaWhPbZ9Ojuc"
-//                                redirectUri:@"http://www.sharesdk.cn"];
-//    
-//    //添加搜狐随身看应用
-//    [ShareSDK connectSohuKanWithAppKey:@"e16680a815134504b746c86e08a19db0"
-//                             appSecret:@"b8eec53707c3976efc91614dd16ef81c"
-//                           redirectUri:@"http://sharesdk.cn"];
-//    
-//    //添加Pocket应用
-//    [ShareSDK connectPocketWithConsumerKey:@"11496-de7c8c5eb25b2c9fcdc2b627"
-//                               redirectUri:@"pocketapp1234"];
-//    
-//    //添加印象笔记应用
-//    [ShareSDK connectEvernoteWithType:SSEverNoteTypeSandbox
-//                          consumerKey:@"sharesdk-7807"
-//                       consumerSecret:@"d05bf86993836004"];
-//    
-//    //添加LinkedIn应用
-//    [ShareSDK connectLinkedInWithApiKey:@"ejo5ibkye3vo"
-//                              secretKey:@"cC7B2jpxITqPLZ5M"
-//                            redirectUri:@"http://sharesdk.cn"];
+    //    //添加Twitter应用
+    //    [ShareSDK connectTwitterWithConsumerKey:@"mnTGqtXk0TYMXYTN7qUxg"
+    //                             consumerSecret:@"ROkFqr8c3m1HXqS3rm3TJ0WkAJuwBOSaWhPbZ9Ojuc"
+    //                                redirectUri:@"http://www.sharesdk.cn"];
+    //
+    //    //添加搜狐随身看应用
+    //    [ShareSDK connectSohuKanWithAppKey:@"e16680a815134504b746c86e08a19db0"
+    //                             appSecret:@"b8eec53707c3976efc91614dd16ef81c"
+    //                           redirectUri:@"http://sharesdk.cn"];
+    //
+    //    //添加Pocket应用
+    //    [ShareSDK connectPocketWithConsumerKey:@"11496-de7c8c5eb25b2c9fcdc2b627"
+    //                               redirectUri:@"pocketapp1234"];
+    //
+    //    //添加印象笔记应用
+    //    [ShareSDK connectEvernoteWithType:SSEverNoteTypeSandbox
+    //                          consumerKey:@"sharesdk-7807"
+    //                       consumerSecret:@"d05bf86993836004"];
+    //
+    //    //添加LinkedIn应用
+    //    [ShareSDK connectLinkedInWithApiKey:@"ejo5ibkye3vo"
+    //                              secretKey:@"cC7B2jpxITqPLZ5M"
+    //                            redirectUri:@"http://sharesdk.cn"];
     
 }
 
@@ -279,8 +278,8 @@ void UncaughtExceptionHandler(NSException *exception) {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
     
-
-
+    
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -348,7 +347,7 @@ void UncaughtExceptionHandler(NSException *exception) {
         
         [alertView show];
     }
-
+    
     [DataBase insertNotifyMessage:content];
     [APService handleRemoteNotification:userInfo];
 }
@@ -356,7 +355,7 @@ void UncaughtExceptionHandler(NSException *exception) {
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Required
     [APService registerDeviceToken:deviceToken];
-   
+    
 }
 
 - (void)networkDidReceiveMessage:(NSNotification *)notification {

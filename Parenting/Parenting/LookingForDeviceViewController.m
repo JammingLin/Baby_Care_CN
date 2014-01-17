@@ -37,8 +37,6 @@
 {
     [super viewDidLoad];
     isFound =YES;
-    //判断搜索硬件类别
-    _deviceId = 0;
     
     _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height)];
     _bleController = [[BLEController alloc]init];
@@ -55,8 +53,16 @@
         if (isFound) {
             peripherals=foundPeripherals;
             [_bleController stopscan];
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"搜索到" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定",@"取消", nil];
-            [alert show];
+            if (_deviceId==0 && [[[peripherals objectAtIndex:0] name] isEqualToString:@"BLE_COM"]) {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"搜索到活动记录设备" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定",@"取消", nil];
+                [alert show];
+            }
+            else if (_deviceId==1 && [[[peripherals objectAtIndex:0] name] isEqualToString:@"BLE_ENV"]) {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"搜索到环境记录设备" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定",@"取消", nil];
+                [alert show];
+            }
+
+            
         }
         isFound=NO;
     }
@@ -110,8 +116,8 @@
     }
     if (buttonIndex==0) {
         //活动信息设备绑定
-        if (_deviceId==0) {
-            [[NSUserDefaults standardUserDefaults] setObject:[[peripherals objectAtIndex:0] name] forKey:@"BLEPERIPHERAL_ACTIVITY"];
+        if (_deviceId==0 && [[[peripherals objectAtIndex:0] name] isEqualToString:@"BLE_COM"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[[peripherals objectAtIndex:0] name] forKey:@"BLE_COM"];
             
             for (UIViewController *myDT in self.navigationController.viewControllers) {
                 if ([myDT isKindOfClass:[SettingViewController class]]) {
@@ -120,7 +126,16 @@
                 }
             }
         }
-        //else if 其他设备绑定 BLEPERIPHERAL_ENVIRONMENT
+        else if (_deviceId==1 && [[[peripherals objectAtIndex:0] name] isEqualToString:@"BLE_ENV"]){
+            [[NSUserDefaults standardUserDefaults] setObject:[[peripherals objectAtIndex:0] name] forKey:@"BLE_ENV"];
+            
+            for (UIViewController *myDT in self.navigationController.viewControllers) {
+                if ([myDT isKindOfClass:[SettingViewController class]]) {
+                    [self.navigationController popToViewController:myDT animated:YES];
+                    break;
+                }
+            }
+        }
     }
     else if (buttonIndex==1){
         return;

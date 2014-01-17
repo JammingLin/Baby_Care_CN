@@ -772,7 +772,7 @@
 #pragma cwb:
 -(void)connectBLEController{
     
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLEPERIPHERAL_ACTIVITY"] != nil) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLE_COM"] != nil) {
         //已绑定过设备,进行数据同步
         bleController = [[BLEController alloc]init];
         bleController.bleControllerDelegate = self;
@@ -794,7 +794,7 @@
     else {
         //Peripherals的名字跟配件名字匹配 如果不匹配还是提示错误
         if (isFound) {
-            NSString *sysPeripheralsName =[[NSUserDefaults standardUserDefaults] objectForKey:@"BLEPERIPHERAL_ACTIVITY"];
+            NSString *sysPeripheralsName =[[NSUserDefaults standardUserDefaults] objectForKey:@"BLE_COM"];
             if ([sysPeripheralsName isEqualToString:[[foundPeripherals objectAtIndex:0] name]])
             {
                 //同步数据

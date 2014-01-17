@@ -45,14 +45,14 @@
     NSArray *peripheral1 = [[NSArray alloc] initWithObjects:@"移动记录设备", nil];
     arrayData = [[NSMutableArray alloc]init];
     
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLEPERIPHERAL_ACTIVITY"] == nil) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLE_COM"] == nil) {
         [arrayData addObject:peripheral1];
     }
 
-//    NSArray *peripheral2 = [[NSArray alloc] initWithObjects:@"环境检测设备", nil];
-//    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLEPERIPHERAL_ENVIRONMENT"] == nil) {
-//        [arrayData addObject:peripheral2];
-//    }
+    NSArray *peripheral2 = [[NSArray alloc] initWithObjects:@"环境检测设备", nil];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"BLE_ENV"] == nil) {
+        [arrayData addObject:peripheral2];
+    }
 }
 
 - (void)didReceiveMemoryWarning
