@@ -12,6 +12,7 @@
 #import "HomeViewController.h"
 #import "InformationCenterViewController.h"
 #import "GuideViewController.h"
+#import "LoginViewController.h"
 
 #import "ACTabBarController.h"
 #import "MyTabBarController.h"
@@ -26,6 +27,7 @@
 {
     ACTabBarController              *TabbarController;
     MyTabBarController              *myTabController;
+    
     MyPageViewController            *myPageViewController;
     EnviromemtViewController        *envirViewController;
     ActivityViewController          *actViewController;
@@ -37,6 +39,8 @@
     SummaryViewController           *summaryViewController;
     HomeViewController              *homeViewController;
     GuideViewController             *guideViewController;
+    LoginViewController             *loginViewController;
+    
     BLEWeatherController            *bleweatherCtrler;
    
     UINavigationController          *settingNavigationViewController;
@@ -49,7 +53,7 @@
     UINavigationController          *envirNavigationViewController;
     UINavigationController          *actNavigationViewController;
     UINavigationController          *phyNavigationViewController;
-    UINavigationController          *calendarNavigationViewController;
+    UINavigationController          *calendarNavigationViewController; 
 
 }
 @property (strong, nonatomic) UIWindow *window;

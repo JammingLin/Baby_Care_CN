@@ -300,7 +300,8 @@ messageView;
 
 -(void)goLogin
 {
-    LoginViewController *loginViewController = [[LoginViewController alloc] initWithRootViewController:self];
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    loginViewController.mainViewController = self.navigationController;
     [self.navigationController pushViewController:loginViewController animated:NO];
 }
 

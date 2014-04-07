@@ -53,6 +53,18 @@ void UncaughtExceptionHandler(NSException *exception) {
         [[NSUserDefaults standardUserDefaults] setObject:[ACDate date] forKey:@"userstartuserdate"];
     }
     
+    //复制db到document才
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"ISEXISIT_BC_INFO"])
+    {
+        NSString *document  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSString *newFile = [document stringByAppendingPathComponent:@"BC_Info.sqlite"];
+        NSString *oldFile = [[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        [fileManager copyItemAtPath:oldFile toPath:newFile error:nil];
+        [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"ISEXISIT_BC_INFO"];
+    }
+
+    
     [self tap];
     
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"btn_back.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,14, 0, 8)] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
@@ -132,31 +144,22 @@ void UncaughtExceptionHandler(NSException *exception) {
     actViewController      = [[ActivityViewController alloc] init];
     phyViewController      = [[PhysiologyViewController alloc] init];
     calendarViewController = [[CalendarViewController alloc] init];
+    guideViewController    = [[GuideViewController alloc] init];
+    loginViewController    = [[LoginViewController alloc] init];
     
-    //homeNavigationViewController    = [[UINavigationController alloc] initWithRootViewController:homeViewController];
-    //summaryNavigationViewController = [[UINavigationController alloc] initWithRootViewController:summaryViewController];
-    //adviseNavigationViewController  = [[UINavigationController alloc] initWithRootViewController:adviseViewController];
-    //settingNavigationViewController = [[UINavigationController alloc] initWithRootViewController:settingViewController];
-    //icNavigationViewController      = [[UINavigationController alloc] initWithRootViewController:icViewController];
     myPageNavigationViewController   = [[UINavigationController alloc]
                                         initWithRootViewController:myPageViewController];
     envirNavigationViewController    = [[UINavigationController alloc]
-                                     initWithRootViewController:envirViewController];
+                                        initWithRootViewController:envirViewController];
     actNavigationViewController      = [[UINavigationController alloc]
-                                     initWithRootViewController:actViewController];
+                                        initWithRootViewController:actViewController];
     phyNavigationViewController      = [[UINavigationController alloc]
-                                     initWithRootViewController:phyViewController];
+                                        initWithRootViewController:phyViewController];
     calendarNavigationViewController = [[UINavigationController alloc]
-                                     initWithRootViewController:calendarViewController];
+                                        initWithRootViewController:calendarViewController];
     
-    
-    
-    //[controllers addObject:homeNavigationViewController];
-    //[controllers addObject:summaryNavigationViewController];
-    //[controllers addObject:adviseNavigationViewController];
-    //[controllers addObject:icNavigationViewController];
-    //[controllers addObject:settingNavigationViewController];
     NSMutableArray *controllers = [[NSMutableArray alloc] init];
+
     [controllers addObject:myPageNavigationViewController];
     [controllers addObject:envirNavigationViewController];
     [controllers addObject:actNavigationViewController];
@@ -165,29 +168,27 @@ void UncaughtExceptionHandler(NSException *exception) {
     
     myTabController = [[MyTabBarController alloc] init];
     [myTabController setViewControllers:controllers];
-    self.window.rootViewController  = myTabController;
     
-    //判断版本信息,如果使用向导版本有更新的话则跳入向导
-    NSString *guideVerson = [[NSUserDefaults standardUserDefaults] stringForKey:@"GuideVerson"]; 
+    //FIXME:TEST
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"ACCOUNT_NAME"];
     
-    if (![guideVerson  isEqual: GuideVerson])
-    {
-        guideViewController = [[GuideViewController alloc] initWithRootViewController:myTabController];
-        [[NSUserDefaults standardUserDefaults] setObject:GuideVerson forKey:@"GuideVerson"];
+    //  向导版本有更新则跳转
+    if (![[[NSUserDefaults standardUserDefaults] stringForKey:@"GUIDE_V"]  isEqual: GUIDE_V]){
+        guideViewController.mainViewController = myTabController;
         self.window.rootViewController = guideViewController;
+        [[NSUserDefaults standardUserDefaults] setObject:GUIDE_V forKey:@"GUIDE_V"];
     }
+    //  未登录账号则跳转
     else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"ACCOUNT_NAME"] == nil){
-        LoginViewController *loginViewController = [[LoginViewController alloc]initWithRootViewController:myTabController];
-        UINavigationController *naviLogi = [[UINavigationController alloc]initWithRootViewController:loginViewController];
-        self.window.rootViewController= naviLogi;
+        UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+        loginViewController.mainViewController = myTabController;
+        self.window.rootViewController = loginNavigationController;
     }
     else{
         self.window.rootViewController  = myTabController;
     }
     
-
     [self initializePlat];
-    
 }
 
 - (void)initializePlat

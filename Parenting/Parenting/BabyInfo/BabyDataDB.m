@@ -35,6 +35,16 @@
     BOOL res;
     [[NSUserDefaults standardUserDefaults] setInteger:baby_id forKey:@"cur_babyid"];
     
+    //创建文件夹
+    NSString *dbFilePath = [NSString stringWithFormat:@"%@/Documents/%d_%d",NSHomeDirectory(),user_id,baby_id];
+    BOOL isDir = NO;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL existed = [fileManager fileExistsAtPath:dbFilePath isDirectory:&isDir];
+    if ( !(isDir == YES && existed == YES) )
+    {
+        [fileManager createDirectoryAtPath:dbFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
     FMDatabase *db=[FMDatabase databaseWithPath:USERDBPATH(user_id,baby_id)];
     res=[db open];
     if (!res) {

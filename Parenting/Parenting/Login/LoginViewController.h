@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 
 @interface LoginViewController : UIViewController<UIAlertViewDelegate>
 {
     BOOL isPushSocialView;
-    UIViewController *_nextViewController;
+    MBProgressHUD *hud;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *viewButtons;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogin;
+@property (weak, nonatomic) UIViewController* mainViewController;
 
--(id)initWithRootViewController:(UIViewController*)rootViewController;
 @end

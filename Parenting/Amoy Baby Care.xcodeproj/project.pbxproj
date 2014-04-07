@@ -420,6 +420,7 @@
 		BE7C698F186997AA00C4B675 /* MyDevicesTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C698E186997AA00C4B675 /* MyDevicesTableCell.xib */; };
 		BE7C699218699B8C00C4B675 /* temp_icon_ADD.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C699018699B8C00C4B675 /* temp_icon_ADD.png */; };
 		BE7C699318699B8C00C4B675 /* temp_icon_ADD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C699118699B8C00C4B675 /* temp_icon_ADD@2x.png */; };
+		BE900F2218ECFCEA00B06133 /* SyncController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE900F2118ECFCEA00B06133 /* SyncController.m */; };
 		BEB4758118E56DBE0004B649 /* NetWorkConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4758018E56DBE0004B649 /* NetWorkConnect.m */; };
 		BEB4758418E572A20004B649 /* DataContract.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4758318E572A20004B649 /* DataContract.m */; };
 		BEB475A018E574A80004B649 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4758818E574A80004B649 /* NSObject+SBJson.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1238,6 +1239,8 @@
 		BE7C698E186997AA00C4B675 /* MyDevicesTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyDevicesTableCell.xib; sourceTree = "<group>"; };
 		BE7C699018699B8C00C4B675 /* temp_icon_ADD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = temp_icon_ADD.png; sourceTree = "<group>"; };
 		BE7C699118699B8C00C4B675 /* temp_icon_ADD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "temp_icon_ADD@2x.png"; sourceTree = "<group>"; };
+		BE900F2018ECFCEA00B06133 /* SyncController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncController.h; sourceTree = "<group>"; };
+		BE900F2118ECFCEA00B06133 /* SyncController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncController.m; sourceTree = "<group>"; };
 		BEB4757F18E56DBE0004B649 /* NetWorkConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkConnect.h; sourceTree = "<group>"; };
 		BEB4758018E56DBE0004B649 /* NetWorkConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkConnect.m; sourceTree = "<group>"; };
 		BEB4758218E572A20004B649 /* DataContract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataContract.h; sourceTree = "<group>"; };
@@ -3183,6 +3186,8 @@
 				BEB4758018E56DBE0004B649 /* NetWorkConnect.m */,
 				BEB4758218E572A20004B649 /* DataContract.h */,
 				BEB4758318E572A20004B649 /* DataContract.m */,
+				BE900F2018ECFCEA00B06133 /* SyncController.h */,
+				BE900F2118ECFCEA00B06133 /* SyncController.m */,
 			);
 			name = NetWorkController;
 			sourceTree = "<group>";
@@ -4198,6 +4203,7 @@
 				4800B15118DA84F80093A6AF /* UserTips.m in Sources */,
 				48EF612718C6FAC7006C3D5C /* CommonUtility.m in Sources */,
 				48EC1DD01861772300965254 /* CustomNotifyViewController.m in Sources */,
+				BE900F2218ECFCEA00B06133 /* SyncController.m in Sources */,
 				48152DF318486B13009A4900 /* UMFeedbackTableViewCellRight.m in Sources */,
 				7215973117453680006FD415 /* defaultAppDelegate.m in Sources */,
 				BE75CD081872C3FC001EF1C1 /* LoginMainViewController.m in Sources */,

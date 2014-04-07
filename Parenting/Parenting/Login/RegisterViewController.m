@@ -13,6 +13,7 @@
 #import "APService.h"
 #import "NetWorkConnect.h"
 #import "DataContract.h"
+#import "UserDataDB.h"
 
 @interface RegisterViewController ()
 
@@ -75,8 +76,12 @@
 -(void)doGoBack{
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma 注册成功跳转到主页
 -(void)doGoMain{
-    [self.navigationController popToRootViewControllerAnimated:YES];}
+    _mainViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentViewController:_mainViewController animated:YES completion:^{}];
+}
 
 -(void)doRegister{
     //输入判断
@@ -151,10 +156,14 @@
          hud.labelText = [result objectForKey:@"msg"];
          //处理反馈信息: code=1为成功  code=99为失败
          if ([[result objectForKey:@"code"]intValue] == 1) {
+             NSMutableDictionary *resultBody = [result objectForKey:@"body"];
              //保存用户名
              [[NSUserDefaults standardUserDefaults] setObject:inputEmail.text forKey:@"ACCOUNT_NAME"];
-             //数据库保存
-             
+             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:RTYPE_APP] forKey:@"ACCOUNT_TYPE"];
+             [[NSUserDefaults standardUserDefaults] setObject:[resultBody objectForKey:@"userId"] forKey:@"ACCOUNT_UID"];
+             [[NSUserDefaults standardUserDefaults]setObject:nil forKey:@"BABYID"];
+             //数据库保存用户信息
+             [[UserDataDB dataBase] createNewUser:[[resultBody objectForKey:@"userId"]intValue] andCategoryIds:@"" andIcon:@"" andUserType:RTYPE_APP andUserAccount:inputEmail.text  andAppVer:PROVERSION andCreateTime:[[resultBody objectForKey:@"createTime"] longValue] andUpdateTime:[[resultBody objectForKey:@"updateTime"] longValue]];
              [hud hide:YES afterDelay:0.8];
              [self performSelector:@selector(doGoMain) withObject:nil afterDelay:0.8];
          }

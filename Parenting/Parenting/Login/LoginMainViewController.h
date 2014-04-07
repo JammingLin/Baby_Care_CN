@@ -11,9 +11,11 @@
 @interface LoginMainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 {
     NSArray *arrData;
+    MBProgressHUD *hud;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) UIViewController* mainViewController;
 
 +(BOOL)validateEmail:(NSString*)email;
 

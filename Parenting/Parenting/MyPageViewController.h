@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BabyinfoViewController.h"
+
 @interface MyPageViewController : ACViewController
 
 @end

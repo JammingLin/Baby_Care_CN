@@ -8,25 +8,37 @@
 
 #import "LoginViewController.h"
 #import "LoginMainViewController.h"
-#import "UMSocial.h"
-#import "ASIHTTPRequest.h"
+#import "UMSocial.h" 
 #import "MBProgressHUD.h"
 #import "MD5.h"
 #import "APService.h"
+#import "DataContract.h"
+#import "NetWorkConnect.h"  
+#import "UserDataDB.h"
+#import "SyncController.h"
+
 @interface LoginViewController ()
 
 @end
 
 @implementation LoginViewController
 
--(id)initWithRootViewController:(UIViewController*)rootViewController
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    if ((self = [super init])) {
-        if (rootViewController != nil) {
-            _nextViewController = rootViewController;
-            [[NSUserDefaults standardUserDefaults]setObject:[rootViewController nibName] forKey:@"ViewControllerBeforLogin"];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        //    [self.tabBarController.tabBarItem setImage:[UIImage imageNamed:@"menu1.png"]];
+        //self.automaticallyAdjustsScrollViewInsets = NO;
+#define IOS7_OR_LATER   ( [[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending )
+        
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+        if ( IOS7_OR_LATER )
+        {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+            self.extendedLayoutIncludesOpaqueBars = NO;
+            self.modalPresentationCapturesStatusBarAppearance = NO;
         }
-        self.hidesBottomBarWhenPushed=YES;
+#endif  // #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
     }
     return self;
 }
@@ -46,7 +58,7 @@
     else{
         self.navigationController.navigationBarHidden = NO;
     }
-}
+} 
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -62,21 +74,16 @@
 }
 
 - (IBAction)goBack:(id)sender {
-    NSString *targetNibName = [[NSUserDefaults standardUserDefaults] objectForKey:@"ViewControllerBeforLogin"];
-
-    for (UIViewController *myDT in self.navigationController.viewControllers) {
-        if ([myDT.nibName isEqualToString:targetNibName]) {
-            [self.navigationController popToViewController:myDT animated:YES];
-            return;
-        }
-    }
-    _nextViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self presentViewController:_nextViewController animated:YES completion:^{}];
+    _mainViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentViewController:_mainViewController animated:YES completion:^{}];
 }
+
+//跳转到APP登录页面
 -(void)goLogin
 {
-    LoginMainViewController *testViewController = [[LoginMainViewController alloc]initWithNibName:@"LoginMainViewController" bundle:nil];
-    [self.navigationController pushViewController:testViewController animated:YES];
+    LoginMainViewController *loginMainViewController = [[LoginMainViewController alloc]initWithNibName:@"LoginMainViewController" bundle:nil];
+    loginMainViewController.mainViewController = _mainViewController;
+    [self.navigationController pushViewController:loginMainViewController animated:YES];
 }
 
 - (IBAction)goLoginByTencent:(id)sender {
@@ -92,7 +99,7 @@
     snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response)
     {
         //加载登录进度条
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.mode = MBProgressHUDModeIndeterminate;
         hud.alpha = 0.5;
         hud.color = [UIColor grayColor];
@@ -105,50 +112,67 @@
                         [MBProgressHUD hideHUDForView:self.view animated:YES];
                         return;
                     }
-                    //TODO:登录接口-记录用户登录纪录
-                    NSString* strUrl = [ASIHTTPADDRESS stringByAppendingString:@"/BaseService.svc/login/"];
-                    strUrl = [strUrl stringByAppendingString:[MD5 md5:ASIHTTPTOKEN]];
-                    NSString* openudid = [@"/" stringByAppendingString:[APService openUDID]];
-                    strUrl = [strUrl stringByAppendingString:openudid];
+                    
+                    //封装数据
+                    NSMutableDictionary *dictBody = [[DataContract dataContract]UserCreateDict:RTYPE_TENCENT account:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToTencent] objectForKey:@"username"]  password:@""];
+                    //Http请求
+                    [[NetWorkConnect sharedRequest]
+                     httpRequestWithURL:USER_LOGIN_URL
+                     data:dictBody
+                     mode:@"POST"
+                     HUD:hud
+                     didFinishBlock:^(NSDictionary *result){
+                         hud.labelText = [result objectForKey:@"msg"];
+                         //处理反馈信息: code=1为成功  code=99为失败
+                         if ([[result objectForKey:@"code"]intValue] == 1) {
+                             NSMutableDictionary *resultBody = [result objectForKey:@"body"];
+                             [[NSUserDefaults standardUserDefaults] setObject:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToSina] objectForKey:@"username"]  forKey:@"ACCOUNT_NAME"];
+                             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:RTYPE_TENCENT] forKey:@"ACCOUNT_TYPE"];
+                             [[NSUserDefaults standardUserDefaults] setObject:[resultBody objectForKey:@"userId"] forKey:@"ACCOUNT_UID"];
+                             [[NSUserDefaults standardUserDefaults]setObject:nil forKey:@"BABYID"];
+                             //数据库保存用户信息
+                             if ([[UserDataDB dataBase] selectUser:[[resultBody objectForKey:@"userId"] intValue]] == nil){
+                                 [[UserDataDB dataBase] createNewUser:[[resultBody objectForKey:@"userId"]intValue] andCategoryIds:@"" andIcon:@"" andUserType:RTYPE_TENCENT andUserAccount:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToSina] objectForKey:@"username"]   andAppVer:PROVERSION andCreateTime:[[resultBody objectForKey:@"createTime"] longValue] andUpdateTime:[[resultBody objectForKey:@"updateTime"] longValue]];
+                             } 
+                             //提示是否同步数据
+                             [hud hide:YES];
+                             [self performSelector:@selector(isSyncData) withObject:nil afterDelay:0.8];
+                         }
+                         else{
+                             [hud hide:YES afterDelay:1.2];
+                         }
+                     }
+                     didFailBlock:^(NSString *error){
+                         //请求失败处理
+                         hud.labelText = http_error;
+                         [hud hide:YES afterDelay:1];
+                     }
+                     isShowProgress:YES
+                     isAsynchronic:YES
+                     netWorkStatus:YES
+                     viewController:self];
                 
-                    NSString* parameter = [NSString stringWithFormat:@"/%@/Tencent",[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToTencent] objectForKey:@"username"]];
-                    strUrl = [strUrl stringByAppendingString:parameter];
-                    strUrl = [strUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                    NSURL *url = [NSURL URLWithString:strUrl];
-                    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-                    [request startSynchronous];
-                    NSError *error = [request error];
-                    UIAlertView *alert;
-                    if (!error) {
-                        [MBProgressHUD hideHUDForView:self.view animated:YES];
-                        NSString *response = [request responseString];
-                        if ([response isEqualToString:@"1"]) {
-                            [[NSUserDefaults standardUserDefaults]setObject:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToTencent] objectForKey:@"username"] forKey:@"ACCOUNT_NAME"];
-                            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:RTYPE_TENCENT] forKey:@"ACCOUNT_TYPE"];
-                            alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"登录成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                            [alert show];
-                        }
-                        else if ([response isEqualToString:@"-9"]){
-                            alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"服务器连接异常!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                            [alert show];
-                        }
-                    }
-                    else{
-                        [MBProgressHUD hideHUDForView:self.view animated:YES];
-                        alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"服务器连接异常!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                        [alert show];
-                        }
                 }];
         }
     });
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if ([alertView.message isEqual: @"登录成功!"])
+    if (alertView.tag == 10109)
     {
-        isPushSocialView = NO;
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        //1同步数据 0不同步直接跳转
+        if (buttonIndex == 1) {
+            [[SyncController syncController]syncBabyDataCollectionsByUserID:ACCOUNTUID HUD:hud SyncFinished:^(){
+                _mainViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                [self presentViewController:_mainViewController animated:YES completion:^{}];
+            }   ViewController:self];
+        }
+        else{
+            _mainViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+            [self presentViewController:_mainViewController animated:YES completion:^{}];
+        }
     }
+
 }
 
 - (IBAction)goLoginBySina:(id)sender {
@@ -162,7 +186,7 @@
     snsPlatform.loginClickHandler(self,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response)
     {
         //加载登录进度条
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.mode = MBProgressHUDModeIndeterminate;
         hud.alpha = 0.5;
         hud.color = [UIColor grayColor];
@@ -175,43 +199,54 @@
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     return;
                 }
-                //TODO:登录接口-记录用户登录纪录
-                NSString* strUrl = [ASIHTTPADDRESS stringByAppendingString:@"/BaseService.svc/login/"];
-                strUrl = [strUrl stringByAppendingString:[MD5 md5:ASIHTTPTOKEN]];
-                NSString* openudid = [@"/" stringByAppendingString:[APService openUDID]];
-                strUrl = [strUrl stringByAppendingString:openudid];
-                NSString* parameter = [NSString stringWithFormat:@"/%@/Sina",[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToSina] objectForKey:@"username"]];
-                strUrl = [strUrl stringByAppendingString:parameter];
-                strUrl = [strUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                NSURL *url = [NSURL URLWithString:strUrl];
-                ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-                [request startSynchronous];
-                NSError *error = [request error];
-                UIAlertView *alert;
-                if (!error) {
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    NSString *response = [request responseString];
-                    if ([response isEqualToString:@"1"]) {
-                        [[NSUserDefaults standardUserDefaults]setObject:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToSina] objectForKey:@"username"] forKey:@"ACCOUNT_NAME"];
-                        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:RTYPE_SINA] forKey:@"ACCOUNT_TYPE"];
-                        alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"登录成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                        [alert show];
-                    }
-                    else if ([response isEqualToString:@"-9"]){
-                        alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"服务器连接异常!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                        [alert show];
-                    }
-                }
-                else{
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"服务器连接异常!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                    [alert show];
-                }
+                //封装数据
+                NSMutableDictionary *dictBody = [[DataContract dataContract]UserCreateDict:RTYPE_SINA account:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToSina] objectForKey:@"username"]  password:@""];
+                //Http请求
+                [[NetWorkConnect sharedRequest]
+                 httpRequestWithURL:USER_LOGIN_URL
+                 data:dictBody
+                 mode:@"POST"
+                 HUD:hud
+                 didFinishBlock:^(NSDictionary *result){
+                     hud.labelText = [result objectForKey:@"msg"];
+                     //处理反馈信息: code=1为成功  code=99为失败
+                     if ([[result objectForKey:@"code"]intValue] == 1) {
+                         NSMutableDictionary *resultBody = [result objectForKey:@"body"];
+                         [[NSUserDefaults standardUserDefaults] setObject:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToSina] objectForKey:@"username"]  forKey:@"ACCOUNT_NAME"];
+                         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:RTYPE_TENCENT] forKey:@"ACCOUNT_TYPE"];
+                         [[NSUserDefaults standardUserDefaults] setObject:[resultBody objectForKey:@"userId"] forKey:@"ACCOUNT_UID"];
+                         [[NSUserDefaults standardUserDefaults]setObject:nil forKey:@"BABYID"];
+                         //数据库保存用户信息
+                         if ([[UserDataDB dataBase] selectUser:[[resultBody objectForKey:@"userId"] intValue]] == nil){
+                             [[UserDataDB dataBase] createNewUser:[[resultBody objectForKey:@"userId"]intValue] andCategoryIds:@"" andIcon:@"" andUserType:RTYPE_SINA andUserAccount:[[[accountResponse.data objectForKey:@"accounts"] objectForKey:UMShareToSina] objectForKey:@"username"]   andAppVer:PROVERSION andCreateTime:[[resultBody objectForKey:@"createTime"] longValue] andUpdateTime:[[resultBody objectForKey:@"updateTime"] longValue]];
+                         }
+                         //提示是否同步数据
+                         [hud hide:YES];
+                         [self performSelector:@selector(isSyncData) withObject:nil afterDelay:0.8];
+                     }
+                     else{
+                         [hud hide:YES afterDelay:1.2];
+                     }
+                 }
+                 didFailBlock:^(NSString *error){
+                     //请求失败处理
+                     hud.labelText = http_error;
+                     [hud hide:YES afterDelay:1];
+                 }
+                 isShowProgress:YES
+                 isAsynchronic:YES
+                 netWorkStatus:YES
+                 viewController:self];
             }];
         }
     });
 }
 
+-(void)isSyncData{
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否同步该账户数据" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    alertView.tag = 10109;
+    [alertView show];
+}
 
 - (void)didReceiveMemoryWarning
 {

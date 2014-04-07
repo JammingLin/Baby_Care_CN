@@ -31,4 +31,14 @@
     return dict;
 }
 
+-(NSMutableDictionary*)UserLoginDict:(int) registerType
+                             account:(NSString*) account
+                            password:(NSString*) password
+{
+    NSArray *key = @[@"account",@"password",@"rtype"];
+    NSArray *data = [[NSArray alloc]initWithObjects:account,password,[NSNumber numberWithInt:registerType] ,nil];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]initWithObjects:data forKeys:key];
+    return dict;
+}
+
 @end

@@ -16,4 +16,8 @@
                        account:(NSString*) account
                       password:(NSString*) password;
 
+-(NSMutableDictionary*)UserLoginDict:(int) registerType
+                             account:(NSString*) account
+                            password:(NSString*) password;
+
 @end

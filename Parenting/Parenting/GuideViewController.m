@@ -15,10 +15,22 @@
 @implementation GuideViewController
 @synthesize fitHeight;
 
--(id)initWithRootViewController:(UIViewController*)rootViewController
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    if ((self = [super init])) {
-        _nextViewController = rootViewController;
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        //    [self.tabBarController.tabBarItem setImage:[UIImage imageNamed:@"menu1.png"]];
+        //self.automaticallyAdjustsScrollViewInsets = NO;
+#define IOS7_OR_LATER   ( [[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending )
+        
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+        if ( IOS7_OR_LATER )
+        {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+            self.extendedLayoutIncludesOpaqueBars = NO;
+            self.modalPresentationCapturesStatusBarAppearance = NO;
+        }
+#endif  // #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
     }
     return self;
 }
@@ -84,11 +96,12 @@
 -(void)skipToMain:(id)sender{ 
     //根据登录状态跳转
      if ([[NSUserDefaults standardUserDefaults] objectForKey:@"ACCOUNT_NAME"] != nil)  {
-        _nextViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-        [self presentViewController:_nextViewController animated:YES completion:^{}];
+        _mainViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [self presentViewController:_mainViewController animated:YES completion:^{}];
     }
     else{
-        LoginViewController *loginViewController = [[LoginViewController alloc]initWithRootViewController:_nextViewController];
+        LoginViewController *loginViewController = [[LoginViewController alloc]init];
+        loginViewController.mainViewController = _mainViewController;
         UINavigationController *naviLogi = [[UINavigationController alloc]initWithRootViewController:loginViewController];
         self.view.window.rootViewController= naviLogi;
     }

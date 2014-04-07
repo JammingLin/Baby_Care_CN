@@ -24,9 +24,8 @@
 -(BOOL)createNewUser:(int)user_id andCategoryIds:(NSString*)cgids andIcon:(NSString*)icon andUserType:(int)userType andUserAccount:(NSString*)account andAppVer:(NSString*)appver andCreateTime:(long)createtime andUpdateTime:(long)updatetime
 {
     BOOL res;
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
 
-    FMDatabase *db=[FMDatabase databaseWithPath:path];
+    FMDatabase *db=[FMDatabase databaseWithPath:UDBPATH];
     res=[db open];
     if (!res) {
         NSLog(@"数据库打开失败");
@@ -46,8 +45,8 @@
          [NSNumber numberWithInt:userType],
          account,
          appver,
-         [NSNumber numberWithLong:createtime],
-         [NSNumber numberWithLong:updatetime]
+         [NSNumber numberWithInt:createtime],
+         [NSNumber numberWithInt:updatetime]
     ];
     
     if (!res) {
@@ -67,9 +66,7 @@
 -(NSDictionary*)selectUser:(int)user_id
 {
     BOOL res;
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
-    
-    FMDatabase *db=[FMDatabase databaseWithPath:path];
+    FMDatabase *db=[FMDatabase databaseWithPath:UDBPATH];
     res=[db open];
     if (!res) {
         NSLog(@"数据库打开失败");
@@ -90,6 +87,9 @@
         [dic setValue:[NSNumber numberWithLong:[resultset longForColumn:@"create_time"]] forKey:@"create_time"];
         [dic setValue:[NSNumber numberWithLong:[resultset longForColumn:@"update_time"]] forKey:@"update_time"];
     }
+    else{
+        return nil;
+    }
     
     [db close];
     return dic;
@@ -99,9 +99,7 @@
 -(BOOL)updateUserCategoryIds:(NSString*)ids andUserId:(int)user_id
 {
     BOOL res;
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
-    
-    FMDatabase *db=[FMDatabase databaseWithPath:path];    res=[db open];
+    FMDatabase *db=[FMDatabase databaseWithPath:UDBPATH];    res=[db open];
     if (!res) {
         NSLog(@"数据库打开失败");
         [db close];
@@ -121,9 +119,7 @@
 -(BOOL)updateUserPhoto:(NSString*)photo andUserId:(int)user_id
 {
     BOOL res;
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
-    
-    FMDatabase *db=[FMDatabase databaseWithPath:path];
+    FMDatabase *db=[FMDatabase databaseWithPath:UDBPATH];
     res=[db open];
     if (!res) {
         NSLog(@"数据库打开失败");
@@ -186,9 +182,7 @@
 -(BOOL)updateNotifyMessageById:(int)userid andCreateTime:(long)create_time
 {
     BOOL res;
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
-    
-    FMDatabase *db=[FMDatabase databaseWithPath:path];
+    FMDatabase *db=[FMDatabase databaseWithPath:UDBPATH];
 
     res=[db open];
     if (!res) {
@@ -239,9 +233,7 @@
     NSMutableArray *array=[[NSMutableArray alloc]initWithCapacity:0];
     BOOL res;
     int user_id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"cur_userid"] integerValue];
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
-    
-    FMDatabase *db=[FMDatabase databaseWithPath:path];
+    FMDatabase *db=[FMDatabase databaseWithPath:UDBPATH];
 
     res=[db open];
     if (!res) {
@@ -297,9 +289,7 @@
 -(BOOL)deleteNotifyMessage:(NSDate*)date
 {
     BOOL res;
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"BC_Info" ofType:@"sqlite"];
-    
-    FMDatabase *db=[FMDatabase databaseWithPath:path];
+    FMDatabase *db=[FMDatabase databaseWithPath:UDBPATH];
 
     res=[db open];
     if (!res) {

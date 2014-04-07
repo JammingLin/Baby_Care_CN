@@ -57,6 +57,8 @@
 #define SHAREPATH ([NSString stringWithFormat:@"%@/Documents/share.png",NSHomeDirectory()])
 #define USERDBPATH(USERID,BABYID) ([NSString stringWithFormat:@"%@/Documents/%d_%d/userdata.db",NSHomeDirectory(),USERID,BABYID])
 
+#define UDBPATH ([NSString stringWithFormat:@"%@/Documents/BC_Info.sqlite",NSHomeDirectory()])
+
 #define DBPATH ([NSString stringWithFormat:@"%@/Documents/userdata.db",NSHomeDirectory()])
 
 #define SDBPATH ([NSString stringWithFormat:@"%@/Documents/BabySuggestion.rdb",NSHomeDirectory()])
@@ -122,7 +124,7 @@
 
 #define JPUSHAPPKEY    @"415aa5c57db9b6d73d91c2af"
 
-#define GuideVerson    @"T1.0.16201"
+#define GUIDE_V    @"T1.0.04021520"
 
 #ifdef DEBUG
 #define ASIHTTPADDRESS @"http://192.168.1.138:8033/babycare/WCF"
@@ -208,6 +210,8 @@
 
 //用户注册请求地址
 #define USER_CREATE_URL ([BASE_URL stringByAppendingString:@"User.svc/UserCreate"])
+#define USER_LOGIN_URL ([BASE_URL stringByAppendingString:@"User.svc/UserLogin"])
+#define BABY_SYNC_URL ([BASE_URL stringByAppendingString:@"Baby.svc/GetBabysInfo"])
 
 //用户注册类型
 #define RTYPE_APP 1
@@ -217,6 +221,12 @@
 //***********  END  ************
 
 #define ACCOUNTNAME ([[NSUserDefaults standardUserDefaults]stringForKey:@"ACCOUNT_NAME"])
+
+#define ACCOUNTUID ([[[NSUserDefaults standardUserDefaults]objectForKey:@"ACCOUNT_UID"]intValue])
+
+#define BABYID ([[[NSUserDefaults standardUserDefaults]objectForKey:@"BABYID"]intValue])
+
+#define PNGSCALE (([UIScreen mainScreen].bounds.size.height) == 568?1.0:(1.0))
 
 #define PNGSCALE (([UIScreen mainScreen].bounds.size.height) >= 568.0 ? 1.0:(480.0/568.0))
 

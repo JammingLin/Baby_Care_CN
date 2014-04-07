@@ -14,8 +14,6 @@
 @property NSInteger fitHeight;
 @property (strong,nonatomic) UIScrollView *scrollView;
 @property (strong,nonatomic) NSMutableArray *slideImages;
-@property (strong,nonatomic) UIViewController   *nextViewController;
-
--(id)initWithRootViewController:(UIViewController*)rootViewController;
+@property (strong,nonatomic) UIViewController   *mainViewController; 
 
 @end
