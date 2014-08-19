@@ -238,34 +238,30 @@
     //加载CorePlot
     [self drawLine:CGRectMake(0, 0, self.view.bounds.size.width, 174)];
     [_viewPlot addSubview:plot];
-    UILabel *labelUnit = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, 60, 20)];
-    labelUnit.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
-    labelUnit.text = [NSString stringWithFormat:@"%@/日数",itemUnit];
-    [_viewPlot addSubview:labelUnit];
     
-    UILabel *labelUserp = [[UILabel alloc]initWithFrame:CGRectMake(200, 5, 30, 18)];
-    labelUserp.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
-    labelUserp.textColor = [UIColor whiteColor];
-    labelUserp.textAlignment = NSTextAlignmentCenter;
-    labelUserp.text = @"用户";
-    labelUserp.backgroundColor = [UIColor redColor];
-    [_viewPlot addSubview:labelUserp];
     
-    UILabel *label75p = [[UILabel alloc]initWithFrame:CGRectMake(235, 5, 30, 18)];
-    label75p.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
-    label75p.textColor = [UIColor whiteColor];
-    label75p.textAlignment = NSTextAlignmentCenter;
-    label75p.text = @"75分";
-    label75p.backgroundColor = [UIColor blueColor];
-    [_viewPlot addSubview:label75p];
+    //图例
+    UIImageView *imageViewArea = [[UIImageView alloc]initWithFrame:CGRectMake(200, 5, 20, 20)];
+    imageViewArea.image = [UIImage imageNamed:@"plot_area_title@2x.png"];
+    [_viewPlot addSubview:imageViewArea];
     
-    UILabel *label25p = [[UILabel alloc]initWithFrame:CGRectMake(270, 5, 30, 18)];
-    label25p.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
-    label25p.textColor = [UIColor whiteColor];
-    label25p.textAlignment = NSTextAlignmentCenter;
-    label25p.text = @"25分";
-    label25p.backgroundColor = [UIColor greenColor];
-    [_viewPlot addSubview:label25p];
+    UILabel *labelArea = [[UILabel alloc]initWithFrame:CGRectMake(195, 25, 30, 18)];
+    labelArea.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
+    labelArea.textColor = [UIColor blackColor];
+    labelArea.textAlignment = NSTextAlignmentCenter;
+    labelArea.text = @"正常值";
+    [_viewPlot addSubview:labelArea];
+    
+    UIImageView *imageViewUser = [[UIImageView alloc]initWithFrame:CGRectMake(232, 5, 20, 20)];
+    imageViewUser.backgroundColor = [UIColor blueColor];
+    [_viewPlot addSubview:imageViewUser];
+    
+    UILabel *labelUser = [[UILabel alloc]initWithFrame:CGRectMake(228, 25, 30, 18)];
+    labelUser.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
+    labelUser.textColor = [UIColor blackColor];
+    labelUser.textAlignment = NSTextAlignmentCenter;
+    labelUser.text = @"用户";
+    [_viewPlot addSubview:labelUser];
 }
 
 -(void)makeAdvise:(CGRect)rect
@@ -318,7 +314,7 @@
     
     //录入P25;P75;用户数值
     NSArray *xyPlot = @[dataP25,dataP75,dataUser];
-    NSArray *xyTitle = @[@"",@""];
+    NSArray *xyTitle = @[@"日龄",itemUnit];
     NSArray *axis = @[xAsix,yAsix];
     
     plot = [[PhyCorePlot alloc]initWithFrame:rect Title:@"" XYPlotRange:xyPlot XYTitle:xyTitle Axis:axis YBaseV:yBaseValue YSizeInterval:ySizeInterval];
@@ -488,17 +484,17 @@
     else{
         arrRes = [[NSMutableArray alloc]initWithArray:[[BabyDataDB babyinfoDB] selectBabyBMIList:itemType BeginDay:beginDay EndDay:endDay BabyBirthTime:birthTime]]; 
     }
-    NSArray *arrRet = [[NSArray alloc]init];
+    NSArray *arrPro = [[NSArray alloc]init];
 
     /**
      *  a.如果区间内无数据,则根据x轴坐标返回:0 0 0 0 0 0
      *  b.如果只有一个值,则根据x轴返回:0 0 0 值 值 值
-     *  c.如果有两个值以上,则根据x轴返回:0 值1 值1 值2 值2 值3
+     *  c.如果有两个值以上,则根据x轴返回:0 值1 值1和值2根据直线求出的坐标 值2  值3
      *  ---  X轴对应的值等于前后区间/2的时间长度内所有值的平均值  ---
      */
     if ([arrRes count] == 0) {
         for (int i=0; i<[Barr count]; i++) {
-            arrRet = [arrRet arrayByAddingObject:[NSNumber numberWithDouble:0.0f]];
+            arrPro = [arrPro arrayByAddingObject:[NSNumber numberWithDouble:0.0f]];
         }
     }
     else{
@@ -523,15 +519,25 @@
                     dCount = dCount + 1;
                 }
             }
-            if (dCount == 0 && [arrRet count] == 0) {
-                arrRet = [arrRet arrayByAddingObject:[NSNumber numberWithDouble:0.0f]];
-            }
-            else if((dCount == 0 && [arrRet count] != 0)){
-                arrRet = [arrRet arrayByAddingObject:[NSNumber numberWithDouble:[[arrRet objectAtIndex:([arrRet count]-1)] doubleValue]]];
+            if (dCount == 0){
+                arrPro = [arrPro arrayByAddingObject:[NSNumber numberWithDouble:0.0f]];
             }
             else if (dCount != 0){
-                arrRet = [arrRet arrayByAddingObject:[NSNumber  numberWithDouble:(dTotal / dCount)]];
+                arrPro = [arrPro arrayByAddingObject:[NSNumber  numberWithDouble:(dTotal / dCount)]];
             }
+        }
+    }
+    
+    NSMutableArray *arrRet = [arrPro mutableCopy];
+    //把空值去掉
+    int iRCount = [arrRet count];
+    for(int i = iRCount - 1; i >= 0 ; i--){
+        if ([[arrRet objectAtIndex:i] doubleValue] == 0) {
+            [arrRet removeObjectAtIndex:i];
+        }
+        else{
+            NSArray *arrTemp = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:i],[arrRet objectAtIndex:i], nil];
+            [arrRet replaceObjectAtIndex:i withObject:arrTemp];
         }
     }
     return arrRet;

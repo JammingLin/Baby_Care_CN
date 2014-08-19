@@ -67,23 +67,51 @@
     // 1 - 建立绘制区域
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) _graph.defaultPlotSpace;
     // 2 - 判断绘制曲线数量并绘制区域
-    CPTScatterPlot *baseP25Plot = [[CPTScatterPlot alloc] init];    //P25参考线
-    baseP25Plot.dataSource = self;
-    baseP25Plot.identifier = @"P25";
-    CPTColor *baseP25Color = [CPTColor greenColor];
-    [_graph addPlot:baseP25Plot toPlotSpace:plotSpace];
     
+    /**  P75  **/
     CPTScatterPlot *baseP75Plot = [[CPTScatterPlot alloc] init];    //P25参考线
     baseP75Plot.dataSource = self;
     baseP75Plot.identifier = @"P75";
     CPTColor *baseP75Color = [CPTColor blueColor];
     [_graph addPlot:baseP75Plot toPlotSpace:plotSpace];
     
-    CPTScatterPlot *targetUserPlot = [[CPTScatterPlot alloc] init];    //P25参考线
+    //P75填充区域
+    NSString *pngFilePath=[[NSBundle mainBundle] pathForResource:@"phy_shadow" ofType:@"png"];
+    CPTFill * P75areaGradientFill = [CPTFill fillWithImage:[CPTImage imageForPNGFile:pngFilePath]];
+    baseP75Plot.areaFill      = P75areaGradientFill;
+    //0.1是为了避免填充区域覆盖XY轴
+    baseP75Plot.areaBaseValue = [[NSDecimalNumber numberWithFloat:0.1] decimalValue];
+    
+    /**  P25  **/
+    CPTScatterPlot *baseP25Plot = [[CPTScatterPlot alloc] init];    //P25参考线
+    baseP25Plot.dataSource = self;
+    baseP25Plot.identifier = @"P25";
+    CPTColor *baseP25Color = [CPTColor blueColor];
+    [_graph addPlot:baseP25Plot toPlotSpace:plotSpace];
+    
+    //P25填充区域
+    CPTFill * areaGradientFill  = [CPTFill fillWithColor:[CPTColor colorWithComponentRed:250/255.0 green:250/255.0 blue:250/255.0 alpha:1.0]];
+    baseP25Plot.areaFill      = areaGradientFill;
+    //0.1是为了避免填充区域覆盖XY轴
+    baseP25Plot.areaBaseValue = [[NSDecimalNumber numberWithFloat:0.1] decimalValue];
+    
+    CPTScatterPlot *targetUserPlot = [[CPTScatterPlot alloc] init];    //用户参考线
     targetUserPlot.dataSource = self;
     targetUserPlot.identifier = @"targetUser";
-    CPTColor *targetUserColor = [CPTColor redColor];
+    CPTColor *targetUserColor = [CPTColor blueColor];
     [_graph addPlot:targetUserPlot toPlotSpace:plotSpace];
+    
+    /* 用户参考线描点 */
+    CPTMutableLineStyle * symbolUserLineStyle = [CPTMutableLineStyle lineStyle];
+    symbolUserLineStyle.lineColor = [CPTColor greenColor];
+    symbolUserLineStyle.lineWidth = 2;
+    
+    CPTPlotSymbol * plotSymbolUser = [CPTPlotSymbol ellipsePlotSymbol];
+    plotSymbolUser.fill          = [CPTFill fillWithColor:[CPTColor blueColor]];
+    plotSymbolUser.lineStyle     = symbolUserLineStyle;
+    plotSymbolUser.size          = CGSizeMake(7.0, 7.0);
+    targetUserPlot.plotSymbol = plotSymbolUser;
+    
     
     // 3 - 设置绘制控件
     [plotSpace scaleToFitPlots:[NSArray arrayWithObjects:baseP25Plot,baseP75Plot,targetUserPlot,nil]];
@@ -92,17 +120,17 @@
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0f) length:CPTDecimalFromFloat(5.5f)];
     // 4 - 设置绘制样式和描点样式 style symbol
     CPTMutableLineStyle *baseP25LineStyle = [baseP25Plot.dataLineStyle mutableCopy];
-    baseP25LineStyle.lineWidth = 1.0;
+    baseP25LineStyle.lineWidth = 0.2;
     baseP25LineStyle.lineColor = baseP25Color;
     baseP25Plot.dataLineStyle = baseP25LineStyle;
     
     CPTMutableLineStyle *baseP75LineStyle = [baseP75Plot.dataLineStyle mutableCopy];
-    baseP75LineStyle.lineWidth = 1.0;
+    baseP75LineStyle.lineWidth = 0.2;
     baseP75LineStyle.lineColor = baseP75Color;
     baseP75Plot.dataLineStyle = baseP75LineStyle;
     
     CPTMutableLineStyle *targetUserLineStyle = [targetUserPlot.dataLineStyle mutableCopy];
-    targetUserLineStyle.lineWidth = 1.0;
+    targetUserLineStyle.lineWidth = 1.5;
     targetUserLineStyle.lineColor = targetUserColor;
     targetUserPlot.dataLineStyle = targetUserLineStyle;
 }
@@ -117,6 +145,7 @@
     axisLineStyle.lineColor = [CPTColor blackColor];
     CPTMutableTextStyle *axisTextStyle = [[CPTMutableTextStyle alloc] init];
     axisTextStyle.color = [CPTColor blackColor];
+    axisTextStyle.textAlignment = NSTextAlignmentRight;
     axisTextStyle.fontSize = 9.0f;
     CPTMutableLineStyle *tickLineStyle = [CPTMutableLineStyle lineStyle];
     tickLineStyle.lineColor = [CPTColor blackColor];
@@ -129,14 +158,16 @@
     // 3 - 配置X轴
     CPTAxis *x = axisSet.xAxis;
     x.title = [CxyTitle objectAtIndex:0];
+    x.titleLocation = CPTDecimalFromDouble(10);
     x.titleTextStyle = axisTitleStyle;
-    x.titleOffset = 20.0f; //20
+    x.titleOffset = -19.5f;
     
     x.axisLineStyle = axisLineStyle; 
     x.labelingPolicy = CPTAxisLabelingPolicyNone;
     x.labelTextStyle = axisTextStyle;
     x.majorIntervalLength = CPTDecimalFromInt(3);
     x.tickDirection = CPTSignNegative;
+    
     CGFloat dateCount = [[Caxis objectAtIndex:0] count];
     NSMutableSet *xLabels = [NSMutableSet setWithCapacity:dateCount];
     NSMutableSet *xLocations = [NSMutableSet setWithCapacity:dateCount];
@@ -164,14 +195,15 @@
     y.title = [CxyTitle objectAtIndex:1];
     y.titleTextStyle = axisTitleStyle;
     y.titleRotation=0; 
-    y.titleLocation=CPTDecimalFromDouble(6.0);
-    y.titleOffset=0.5;
+    y.titleLocation=CPTDecimalFromDouble(6.2);
+    y.titleOffset=0.1;
     
     y.axisLineStyle = axisLineStyle;
     y.labelingPolicy = CPTAxisLabelingPolicyNone;
     y.labelTextStyle = axisTextStyle;
     y.labelOffset = 10.0f;
     y.tickDirection = CPTSignPositive;
+    
     //TODO:画Y轴label
     CGFloat yDateCount = [[Caxis objectAtIndex:1] count];
     NSMutableSet *yLabels = [NSMutableSet setWithCapacity:yDateCount];
@@ -185,9 +217,9 @@
         
         CGFloat location = k++;
         label.tickLocation = CPTDecimalFromCGFloat(location);
-        label.offset = -18.0f;
-        label.alignment = NSTextAlignmentCenter;
-        if (label) {
+        label.offset = -21.0f;
+        //y轴刻度0不现实
+        if (label && l != 0) {
             [yLabels addObject:label];
             [yLocations addObject:[NSNumber numberWithFloat:location]];
         }
@@ -199,7 +231,12 @@
 
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
-    return [[CxyRange objectAtIndex:0] count];
+    if ([plot.identifier  isEqual: @"targetUser"]) {
+        return [[CxyRange objectAtIndex:2] count];
+    }
+    else{
+        return [[CxyRange objectAtIndex:0] count];
+    }
 }
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
@@ -208,7 +245,14 @@
     switch (fieldEnum) {
         case CPTScatterPlotFieldX:
             if (index < valueCount) {
-                return [NSNumber numberWithInt:index];
+                //+0.1是为了避免填充区域覆盖XY轴
+                if ([plot.identifier  isEqual: @"targetUser"]) {
+                    double dXNum = [[[[CxyRange objectAtIndex:2] objectAtIndex:index] objectAtIndex:0] intValue] + 0.1;
+                    return [NSNumber numberWithDouble:dXNum];
+                }
+                else{
+                    return [NSNumber numberWithDouble:(index + 0.1)];
+                }
             }
             break;
         case CPTScatterPlotFieldY:
@@ -220,7 +264,7 @@
                 NSNumber *num75 = [[CxyRange objectAtIndex:1] objectAtIndex:index];
                 return [self getYAxisValue:num75];
             } else if ([plot.identifier isEqual:@"targetUser"] == YES) {
-                NSNumber *numUser = [[CxyRange objectAtIndex:2] objectAtIndex:index];
+                NSNumber *numUser = [[[CxyRange objectAtIndex:2] objectAtIndex:index] objectAtIndex:1];
                 return [self getYAxisValue:numUser];
             }
             break;

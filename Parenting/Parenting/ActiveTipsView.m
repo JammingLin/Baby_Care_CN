@@ -30,6 +30,9 @@
 -(void)showTipsView:(int)CategoryId{
     if(_categoryId != CategoryId)
     {
+        [_scrollView removeFromSuperview];
+        [self initView];
+        
         _categoryId = CategoryId;
         [[SyncController syncController]    getTips:ACCOUNTUID
                                      CategoryID:_categoryId

@@ -33,13 +33,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101202" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="如果你已经月经失调,那么最好的一条建议是你说咋样就咋样" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dyl-BU-TZP">
-                                <rect key="frame" x="10" y="193" width="280" height="42"/>
+                                <rect key="frame" x="150" y="214" width="0.0" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" tag="10203" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exp.png" id="irU-cA-5h0">
+                            <imageView userInteractionEnabled="NO" tag="10203" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="irU-cA-5h0">
                                 <rect key="frame" x="10" y="30" width="280" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -73,7 +73,4 @@
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="exp.png" width="280" height="160"/>
-    </resources>
 </document>

@@ -1247,6 +1247,7 @@
 		BE422ADB18C6B5580089219C /* ASIController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE422ADA18C6B5580089219C /* ASIController.m */; };
 		BE4A8621197618AB00EB232B /* PHYHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4A8620197618AB00EB232B /* PHYHistoryViewController.m */; };
 		BE4A862319761B5800EB232B /* PHYHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE4A862219761B5800EB232B /* PHYHistoryViewController.xib */; };
+		BE4DA7E519A3570300A46CC5 /* plot_area_title@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE4DA7E419A3570300A46CC5 /* plot_area_title@2x.png */; };
 		BE5914C418FCDEBC00F0488B /* BabyMessageDataDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5914C318FCDEBC00F0488B /* BabyMessageDataDB.m */; };
 		BE5914C718FCDEE000F0488B /* BabyBaseInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5914C618FCDEE000F0488B /* BabyBaseInfoView.m */; };
 		BE5914CA18FCDEED00F0488B /* HomeTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5914C918FCDEED00F0488B /* HomeTopView.m */; };
@@ -1300,6 +1301,7 @@
 		BE7C698F186997AA00C4B675 /* MyDevicesTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C698E186997AA00C4B675 /* MyDevicesTableCell.xib */; };
 		BE7C699218699B8C00C4B675 /* temp_icon_ADD.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C699018699B8C00C4B675 /* temp_icon_ADD.png */; };
 		BE7C699318699B8C00C4B675 /* temp_icon_ADD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C699118699B8C00C4B675 /* temp_icon_ADD@2x.png */; };
+		BE8FA4BE19A2FA2400B2C0A5 /* phy_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE8FA4BD19A2FA2400B2C0A5 /* phy_shadow@2x.png */; };
 		BE900F2218ECFCEA00B06133 /* SyncController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE900F2118ECFCEA00B06133 /* SyncController.m */; };
 		BE955F4C190102A400225029 /* PhyCorePlot.m in Sources */ = {isa = PBXBuildFile; fileRef = BE955F49190102A400225029 /* PhyCorePlot.m */; };
 		BE955F4D190102A400225029 /* PhyCPTTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = BE955F4B190102A400225029 /* PhyCPTTheme.m */; };
@@ -2916,6 +2918,7 @@
 		BE4A861F197618AB00EB232B /* PHYHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHYHistoryViewController.h; sourceTree = "<group>"; };
 		BE4A8620197618AB00EB232B /* PHYHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHYHistoryViewController.m; sourceTree = "<group>"; };
 		BE4A862219761B5800EB232B /* PHYHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PHYHistoryViewController.xib; sourceTree = "<group>"; };
+		BE4DA7E419A3570300A46CC5 /* plot_area_title@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plot_area_title@2x.png"; sourceTree = "<group>"; };
 		BE5914C218FCDEBC00F0488B /* BabyMessageDataDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyMessageDataDB.h; sourceTree = "<group>"; };
 		BE5914C318FCDEBC00F0488B /* BabyMessageDataDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyMessageDataDB.m; sourceTree = "<group>"; };
 		BE5914C518FCDEE000F0488B /* BabyBaseInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyBaseInfoView.h; sourceTree = "<group>"; };
@@ -2998,6 +3001,7 @@
 		BE7C698E186997AA00C4B675 /* MyDevicesTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyDevicesTableCell.xib; sourceTree = "<group>"; };
 		BE7C699018699B8C00C4B675 /* temp_icon_ADD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = temp_icon_ADD.png; sourceTree = "<group>"; };
 		BE7C699118699B8C00C4B675 /* temp_icon_ADD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "temp_icon_ADD@2x.png"; sourceTree = "<group>"; };
+		BE8FA4BD19A2FA2400B2C0A5 /* phy_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "phy_shadow@2x.png"; sourceTree = "<group>"; };
 		BE900F2018ECFCEA00B06133 /* SyncController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncController.h; sourceTree = "<group>"; };
 		BE900F2118ECFCEA00B06133 /* SyncController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncController.m; sourceTree = "<group>"; };
 		BE955F48190102A400225029 /* PhyCorePlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhyCorePlot.h; sourceTree = "<group>"; };
@@ -6273,6 +6277,8 @@
 		BE25761818FE51CA0053683A /* 生理 */ = {
 			isa = PBXGroup;
 			children = (
+				BE4DA7E419A3570300A46CC5 /* plot_area_title@2x.png */,
+				BE8FA4BD19A2FA2400B2C0A5 /* phy_shadow@2x.png */,
 				BE6938DC19090EAD00FC2BB4 /* icon_BMI@2x.png */,
 				BE6938DD19090EAD00FC2BB4 /* icon_CIR@2x.png */,
 				BE6938DE19090EAD00FC2BB4 /* icon_temperture@2x.png */,
@@ -7160,6 +7166,7 @@
 				48FEAF5D18E917CB002425E2 /* btn_playing_focus@2x.png in Resources */,
 				48F91AAE18FB8DF10038DC67 /* light_level_bad@2x.png in Resources */,
 				4880172F199DF72900F6778B /* 19.4.4.jpg in Resources */,
+				BE8FA4BE19A2FA2400B2C0A5 /* phy_shadow@2x.png in Resources */,
 				BE25764718FE51CA0053683A /* line_red@2x.png in Resources */,
 				48866EAE199A12E6007B16AA /* icon_mood.png in Resources */,
 				482791D81884DE1D003E9724 /* iTunesArtwork@2x.png in Resources */,
@@ -7753,6 +7760,7 @@
 				488016F0199DF72900F6778B /* 16.1.2.jpg in Resources */,
 				4880170E199DF72900F6778B /* 17.4.3.jpg in Resources */,
 				488017DB199DF72900F6778B /* 9.4.2.jpg in Resources */,
+				BE4DA7E519A3570300A46CC5 /* plot_area_title@2x.png in Resources */,
 				48801753199DF72900F6778B /* 21.3.2.jpg in Resources */,
 				48F91AD618FB8DF10038DC67 /* humi_level_bad@2x.png in Resources */,
 				48F91B0818FBB54E0038DC67 /* line_dotted_grey@2x.png in Resources */,
