@@ -283,7 +283,7 @@
     labelArea.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
     labelArea.textColor = [UIColor blackColor];
     labelArea.textAlignment = NSTextAlignmentCenter;
-    labelArea.text = @"标准值";
+    labelArea.text = @"用户";
     [_viewPlot addSubview:labelArea];
     
     UIImageView *imageViewUser = [[UIImageView alloc]initWithFrame:CGRectMake(232, 5, 20, 20)];
@@ -294,7 +294,7 @@
     labelUser.font = [UIFont fontWithName:@"Arial" size:SMALLTEXT];
     labelUser.textColor = [UIColor blackColor];
     labelUser.textAlignment = NSTextAlignmentCenter;
-    labelUser.text = @"用户";
+    labelUser.text = @"标准值";
     [_viewPlot addSubview:labelUser];
 }
 

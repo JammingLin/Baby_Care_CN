@@ -60,12 +60,14 @@
 /** 检测系统消息:0 **/
 //key = version
 -(void)checkSysMsg{
+    /*
     int msgType = 0;
     NSString *version = [[NSUserDefaults standardUserDefaults] stringForKey:@"GUIDE_V"];
     if (![[BabyMessageDataDB babyMessageDB] isSysUpdateMsgExist:version]) {
         NSString *msgContent = [NSString stringWithFormat:@"欢迎使用母婴助手%@版本!",version];
         [[BabyMessageDataDB babyMessageDB] insertBabyMessageNormal:[ACDate getTimeStampFromDate:[NSDate date]] UpdateTime:[ACDate getTimeStampFromDate:[NSDate date]] key:version type:msgType content:msgContent];
     }
+     */
 }
 
 /** 检测用户自定义提醒:1 **/

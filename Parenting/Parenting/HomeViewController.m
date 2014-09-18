@@ -364,7 +364,7 @@
         imageViewIcon.image = [UIImage imageNamed:@"icon_message.png"];
         labelContent.text = [curData objectAtIndex:1];
         labelTime.text = [ACDate getMsgTimeSinceDate:[ACDate getDateFromTimeStamp:[[curData objectAtIndex:4]longValue]]];
-
+//        labelTime.text = @"1天前";
         
         NSString *picUrl = [NSString stringWithFormat:@"%@/%@",WEBPHOTO(@"Tip"),[curData objectAtIndex:2]];
         UIASYImageView *imageView = [[UIASYImageView alloc] initWithFrame:imagePic.frame];
