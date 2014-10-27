@@ -304,6 +304,8 @@
 #define LITTLETIPS_SYNC_URL ([BASE_URL stringByAppendingString:@"api/User.svc/SyncLittleTips"])
 #define LITTLETIPS_MAXGETNUMBER 100
 
+#define BABYINFO_UPLOAD_URL ([BASE_URL stringByAppendingString:@"api/Baby.svc/UploadBabyInfo"])
+
 //获取app评分
 #define GET_APP_INFO ([BASE_URL stringByAppendingString:@"api/User.svc/GetAppInfo"])
 

@@ -51,6 +51,16 @@
 -(void)viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
+    /* 检测是否需上传该宝贝信息 */
+    NSString *user_baby_id = [NSString stringWithFormat:@"IsUpload_%d_%d",ACCOUNTUID,BABYID];
+    if (BABYID != 0 && [[NSUserDefaults standardUserDefaults] objectForKey:user_baby_id] == nil)
+    {
+        NSDictionary *dic = [[BabyDataDB babyinfoDB]selectBabyInfoByBabyId:BABYID];
+        NSMutableDictionary *babyInfo = [[DataContract dataContract] BabyInfoCreateByBabyID:BABYID Brith:[dic[@"birth"] longValue] Sex:[dic[@"sex"] intValue] NickName:dic[@"nickname"]];
+        [[SyncController syncController] UploadBabyInfo:babyInfo andUserBabyID:user_baby_id];
+    }
+     
+    
     //未登陆跳转
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"ACCOUNT_NAME"] == nil){
         //清空原始baby信息

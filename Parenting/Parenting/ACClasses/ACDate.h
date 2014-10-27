@@ -59,4 +59,6 @@
 
 #pragma mark 获取出生日数文本
 +(NSString*)getBabyBirthOfDaysStr:(long)birth;
+#pragma mark 获取日龄
++(int)getBirthDay:(long)birth;
 @end

@@ -115,7 +115,9 @@
     NSDictionary *dict = [[BabyDataDB babyinfoDB]selectBabyInfoByBabyId:BABYID];
     long birth_time = [[dict objectForKey:@"birth"] longValue];
     int months = [ACDate getDiffMonthFromBirth:[ACDate getDateFromTimeStamp:birth_time]];
-    int days = [ACDate getday:[NSDate date]];
+    
+    int days = [ACDate getBirthDay:[dict[@"birth"] longValue]];
+    
     //当月评测是否未完成
     if (([BaseSQL isFinishTestWithMonth:months] && days >= 25) && [[BabyMessageDataDB babyMessageDB] isTestExistTodayWithKey:months] == 0) {
         NSString *msgContent = [NSString stringWithFormat:@"宝宝第%d月的评测开始啦!",months];
@@ -137,7 +139,10 @@
     NSArray *arrHeight = [[BabyDataDB babyinfoDB] selectBabyPhysiologyList:0];
     NSDictionary *dic = [arrHeight firstObject];
     NSDate *lastRecordDate = [ACDate getDateFromTimeStamp:[[dic objectForKey:@"measure_time"] longValue]];
-    int days = [ACDate getday:[NSDate date]];
+    
+    NSDictionary *dicBabyInfo = [[BabyDataDB babyinfoDB]selectBabyInfoByBabyId:BABYID];
+    int days = [ACDate getBirthDay:[dicBabyInfo[@"birth"] longValue]];
+    
     //case 1:phyHeight表中该月没有记录
     if ([ACDate getDiffMonthFromDate:lastRecordDate] != 0)//该月无记录
     {
@@ -154,7 +159,8 @@
     NSArray *arrHeight = [[BabyDataDB babyinfoDB] selectBabyPhysiologyList:1];
     NSDictionary *dic = [arrHeight firstObject];
     NSDate *lastRecordDate = [ACDate getDateFromTimeStamp:[[dic objectForKey:@"measure_time"] longValue]];
-    int days = [ACDate getday:[NSDate date]];
+    NSDictionary *dicBabyInfo = [[BabyDataDB babyinfoDB]selectBabyInfoByBabyId:BABYID];
+    int days = [ACDate getBirthDay:[dicBabyInfo[@"birth"] longValue]];
     //case 1:phyHeight表中该月没有记录
     if ([ACDate getDiffMonthFromDate:lastRecordDate] != 0)//该月无记录
     {

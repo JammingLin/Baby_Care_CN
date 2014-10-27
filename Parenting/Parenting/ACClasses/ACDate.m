@@ -732,4 +732,50 @@
     
 }
 
+#pragma mark 获取出生的日数
++(int)getBirthDay:(long)birth
+{
+    //时间戳转date
+    NSDate *birthDate = [ACDate getDateFromTimeStamp:birth];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd"];
+    NSString *age = [dateFormatter stringFromDate:birthDate];
+    
+    NSDateFormatter *fomatter=[[NSDateFormatter alloc]init];
+    [fomatter setLocale:[NSLocale currentLocale]];
+    [fomatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date=[fomatter dateFromString:age];
+    //NSLog(@"getbabyage: %@",date);
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit;
+    comps=  [calendar components:unitFlags fromDate:date toDate:[ACDate date] options:nil];
+    return [comps day];
+    
+}
+
++(int)getBirthMonth:(long)birth
+{
+    //时间戳转date
+    NSDate *birthDate = [ACDate getDateFromTimeStamp:birth];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd"];
+    NSString *age = [dateFormatter stringFromDate:birthDate];
+    
+    NSDateFormatter *fomatter=[[NSDateFormatter alloc]init];
+    [fomatter setLocale:[NSLocale currentLocale]];
+    [fomatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date=[fomatter dateFromString:age];
+    //NSLog(@"getbabyage: %@",date);
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit;
+    comps=  [calendar components:unitFlags fromDate:date toDate:[ACDate date] options:nil];
+    return [comps month] + 1;
+    
+}
+
+
 @end

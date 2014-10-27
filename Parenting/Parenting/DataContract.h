@@ -21,4 +21,8 @@
                             password:(NSString*) password;
 
 -(NSMutableDictionary*)BabyCreateByUserIdDict:(int) userid;
+
+#pragma mark 封装宝贝信息实体
+-(NSMutableDictionary*)BabyInfoCreateByBabyID:(int)babyid Brith:(long)birth Sex:(int)sex NickName:(NSString*)nickName;
+
 @end

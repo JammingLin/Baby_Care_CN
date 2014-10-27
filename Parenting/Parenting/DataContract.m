@@ -49,4 +49,13 @@
     return dict;
 }
 
+#pragma mark 封装宝贝信息实体
+-(NSMutableDictionary*)BabyInfoCreateByBabyID:(int)babyid Brith:(long)birth Sex:(int)sex NickName:(NSString*)nickName
+{
+    NSArray *key = @[@"babyId",@"birth",@"sex",@"nickName"];
+    NSArray *data = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:babyid],[NSNumber numberWithLong:birth],[NSNumber numberWithInt:sex],nickName,nil];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:data forKeys:key];
+    return dict;
+}
+
 @end

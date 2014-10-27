@@ -46,5 +46,7 @@ ViewController:(UIViewController*) viewController;
                HUD:(MBProgressHUD*) hud
       SyncFinished:(SyncFinishBlockP) syncFinishBlockP
     ViewController:(UIViewController*) viewController;
- 
+
+#pragma mark 上传宝贝信息并刷新上传状态(user_baby_id)
+-(void)UploadBabyInfo:(NSMutableDictionary*)babyInfo andUserBabyID:(NSString*)user_baby_id;
 @end

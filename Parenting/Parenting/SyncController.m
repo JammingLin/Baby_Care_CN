@@ -387,5 +387,30 @@ ViewController:(UIViewController*) viewController{
                                         netWorkStatus:YES
                                        viewController:nil];
 }
- 
+
+#pragma mark 上传宝贝信息并刷新上传状态(user_baby_id)
+-(void)UploadBabyInfo:(NSMutableDictionary*)babyInfo andUserBabyID:(NSString*)user_baby_id
+{
+    NetWorkConnect *net = [[NetWorkConnect alloc] init];
+    [net httpRequestWithURL:BABYINFO_UPLOAD_URL
+                       data:babyInfo
+                       mode:@"POST"
+                        HUD:nil
+             didFinishBlock:^(NSDictionary *result)
+     {
+         //如果上传成功则做标记
+         if ([result[@"code"] intValue] == 1) {
+             [[NSUserDefaults standardUserDefaults] setObject:@"Uploaded" forKey:user_baby_id];
+         }
+     }
+               didFailBlock:^(NSString *error)
+     {
+         
+     }
+             isShowProgress:YES
+              isAsynchronic:YES
+              netWorkStatus:YES
+             viewController:nil];
+}
+
 @end
