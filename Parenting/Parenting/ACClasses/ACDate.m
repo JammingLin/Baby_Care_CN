@@ -725,9 +725,12 @@
     else if ([comps year]!=0 && [comps month] == 0 && [comps day] == 0){
         return [NSString stringWithFormat:@"%d岁整",[comps year]];
     }
+    else if ([comps year]!=0 && [comps month] != 0 && [comps day] == 0){
+        return [NSString stringWithFormat:@"%d岁%d月",[comps year],[comps month]];
+    }
     else
     {
-        return [NSString stringWithFormat:@"%d年%d月\n%d天",[comps year],[comps month],[comps day]];
+        return [NSString stringWithFormat:@"%d岁%d月\n%d天",[comps year],[comps month],[comps day]];
     }
     
 }
