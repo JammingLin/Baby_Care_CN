@@ -279,6 +279,8 @@ void UncaughtExceptionHandler(NSException *exception) {
 
     
     //添加新浪微博应用
+    [UMSocialConfig setFollowWeiboUids:[NSDictionary dictionaryWithObjectsAndKeys:SINA_WEIBO_ID,UMShareToSina,nil]];
+
     [UMSocialData setAppKey:UMENGAPPKEY];
     
     //添加QQ分享
@@ -288,6 +290,7 @@ void UncaughtExceptionHandler(NSException *exception) {
     [UMSocialWechatHandler setWXAppId:WXAPPID appSecret:WXSECRETKEY url:@"http://www.umeng.com/social"];
     
     [UMSocialTencentWeiboHandler openSSOWithRedirectUrl:@"http://sns.whalecloud.com/tencent2/callback"];
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

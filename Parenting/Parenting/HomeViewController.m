@@ -38,7 +38,6 @@
     // Do any additional setup after loading the view from its nib.
     [self.view setBackgroundColor:UIColorFromRGB(kColor_baseView)];
     _imagePicker=[[UIImagePickerController alloc]init];
-    
     //**  加载子view  **
     [self initSubView];
     

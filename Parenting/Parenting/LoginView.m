@@ -214,17 +214,19 @@
     self.hidden = YES;
     
     isPushSocialView = YES;
+    [[UMSocialDataService defaultDataService] requestAddFollow:UMShareToSina followedUsid:@[SINA_WEIBO_ID] completion:nil];
+    
+    [UMSocialConfig setFollowWeiboUids:[NSDictionary dictionaryWithObjectsAndKeys:SINA_WEIBO_ID,UMShareToSina,nil]];
+    
     BOOL isOauth = [UMSocialAccountManager isOauthWithPlatform:UMShareToSina];
     if (isOauth) {
         //TODO:有登录过，如何处理
         //return;
     }
     
-    //临时:先隐藏登陆view
-//    HomeViewController *homeVC = (HomeViewController*)_mainViewController;
-//    homeVC.isLogining = YES;
-    
     UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToSina];
+    
+    
     snsPlatform.loginClickHandler(_mainViewController,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response)
                                   {
                                       //加载登录进度条

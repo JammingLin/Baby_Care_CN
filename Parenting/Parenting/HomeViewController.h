@@ -28,6 +28,9 @@
     MBProgressHUD *_hud;
     
     UIAlertView *_alertView;
+    
+    __weak NSString * test1;
+    NSString *test2;
 }
 
 #pragma mark 宝宝数据对象类
